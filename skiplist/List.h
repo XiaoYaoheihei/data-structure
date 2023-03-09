@@ -29,6 +29,10 @@ class SkipList {
         int getRandomLevel();
         //插入一个元素
         void insertElement(int key);
+        //删除元素
+        void deleteElement(int key);
+        //查找元素
+        void searchElement(int key);
 
 };
 

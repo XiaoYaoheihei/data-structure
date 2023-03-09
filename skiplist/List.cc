@@ -103,6 +103,49 @@ void SkipList::display() {
 }
 
 //删除元素
+void SkipList::deleteElement(int key) {
+    Node *current = head;
 
+    Node *update[MAXLVL+1];
+    memset(update, 0, sizeof(Node*)*(MAXLVL+1));
+
+    for(int i = level; i >= 0; i--) {
+        while(current->forward[i] && current->forward[i]->key < key) {
+            current = current->forward[i];
+        }
+        update[i] = current;
+    }
+    current = current->forward[0];
+
+    if (current != NULL && current->key == key) {
+
+        for(int i = 0; i <= level; i++) {
+            if (update[i]->forward[i] != current) {
+                break;
+            }
+
+            update[i]->forward[i] = current->forward[i];
+        }
+    }
+
+    //修改表的level值
+    while(level > 0 && head->forward[level] == 0) {
+        level--;
+    }
+    cout << "Successfully delete key" << endl;
+}
 
 //搜索元素
+void SkipList::searchElement(int key) {
+    Node *current = head;
+    for (int i = level; i >= 0; i--) {
+        while(current->forward[i] && current->forward[i]->key < key ) {
+            current = current->forward[i];
+        }
+    }
+
+    current = current->forward[0];
+    if (current && current->key == key) {
+        cout << "Found key:" << key << endl;
+    }
+}
